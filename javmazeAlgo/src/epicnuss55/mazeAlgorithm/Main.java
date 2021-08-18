@@ -5,13 +5,13 @@ import java.util.Stack;
 
 public class Main {
     public static final String Wall = "#";
-    public static final String Visited = " ";
+    public static final String Visited = "_";
     public static final String NotVisited = "O";
 
     public enum Direction {
         up, down, left, right
     }
-    public static String[][] maze(int x, int y) {
+    public static String[][] maze(int x, int y, boolean weirdGen) {
         //creates empty
         String[][] emptyMaze = new String[1+(y*2)][1+(x*2)];
         for (int i = 0; i < emptyMaze.length; i++) {
@@ -93,11 +93,47 @@ public class Main {
             }
         }
 
+        if (weirdGen) {
+            for (int i = 1; i < emptyMaze.length - 1; i++) {
+                for (int k = 1; k < emptyMaze[i].length - 1; k++) {
+                    if ((int) (Math.random() * 100) > 95) {
+                        switch ((int) (Math.random() * 3)) {
+                            case 1 -> {
+                                for (int m = 0; m < 3; m++) {
+                                    for (int n = 0; n < 2; n++) {
+                                        if (i + m < emptyMaze.length - 1 && k + n < emptyMaze[i + m].length - 1)
+                                            emptyMaze[i + m][k + n] = Visited;
+                                    }
+                                }
+                            }
+                            case 2 -> {
+                                for (int m = 0; m < 2; m++) {
+                                    for (int n = 0; n < 3; n++) {
+                                        if (i + m < emptyMaze.length - 1 && k + n < emptyMaze[i + m].length - 1)
+                                            emptyMaze[i + m][k + n] = Visited;
+                                    }
+                                }
+                            }
+                            case 3 -> {
+                                for (int m = 0; m < 2; m++) {
+                                    for (int n = 0; n < 2; n++) {
+                                        if (i + m < emptyMaze.length - 1 && k + n < emptyMaze[i + m].length - 1)
+                                            emptyMaze[i + m][k + n] = Visited;
+                                    }
+                                }
+                            }
+                        }
+                    } else if ((int) (Math.random() * 100) < 3) {
+                        emptyMaze[i][k] = Visited;
+                    }
+                }
+            }
+        }
         return emptyMaze;
     }
 
     public static void main(String[] args) {
-        String[][] maze = maze(50,25);
+        String[][] maze = maze(100,80, true);
 
         for (int i = 0; i < maze.length; i++) {
             for (int k = 0; k < maze[i].length; k++) {

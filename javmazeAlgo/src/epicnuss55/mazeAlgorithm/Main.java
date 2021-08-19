@@ -7,6 +7,9 @@ public class Main {
     public static final String Wall = "#";
     public static final String Visited = "_";
     public static final String NotVisited = "O";
+    public static final String WallGen = "@";
+    public static final String FloorGen = "!";
+    public static final String ExitGen = "E";
 
     public enum Direction {
         up, down, left, right
@@ -129,11 +132,25 @@ public class Main {
                 }
             }
         }
+
+        emptyMaze[(int) (Math.random()*((y*2)-1))+1][(int) (Math.random()*((y*2)-1))+1] = ExitGen;
+
+        for (int i = 0; i < emptyMaze.length; i++) {
+            int xwhereabouts = (int) (Math.random()*((x*2)-1))+1;
+            if ((int) (Math.random()*100) <= 5) {
+                emptyMaze[i][xwhereabouts] = ExitGen;
+            } else if ((int) (Math.random()*100) <= 30) {
+                if (emptyMaze[i][xwhereabouts] == Wall)
+                    emptyMaze[i][xwhereabouts] = WallGen;
+                else if (emptyMaze[i][xwhereabouts] == Visited)
+                    emptyMaze[i][xwhereabouts] = FloorGen;
+            }
+        }
         return emptyMaze;
     }
 
     public static void main(String[] args) {
-        String[][] maze = maze(100,80, true);
+        String[][] maze = maze(50,25, true);
 
         for (int i = 0; i < maze.length; i++) {
             for (int k = 0; k < maze[i].length; k++) {
